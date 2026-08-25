@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+/* Fix for Phone Input Styling */
+.PhoneInput {
+  display: flex;
+  align-items: center;
+}
+
+.PhoneInputInput {
+  flex: 1;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  background: transparent;
+}
+
+.PhoneInputCountry {
+  border-right: 1px solid #d1d5db; /* gray-300 */
+  padding-right: 10px;
+}
