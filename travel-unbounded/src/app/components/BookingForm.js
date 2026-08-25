@@ -21,11 +21,11 @@ export default function BookingForm() {
     e.preventDefault();
     setLoading(true);
     try {
-      const res = await fetch('/api/enquiry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      const res = await fetch('https://travel-unbounded-backend.onrender.com/api/enquiry', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData)
+});
       if (res.ok) setSuccess(true);
       else alert("Submission failed. Please check your connection.");
     } catch (err) {
