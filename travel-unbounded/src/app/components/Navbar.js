@@ -22,13 +22,13 @@ export default function Navbar() {
             <Link href="/about" className="hover:text-orange-600 transition">About</Link>
             <Link href="/contact" className="hover:text-orange-600 transition">Contact</Link>
 
-            <Link 
-  href="/contact" 
-  className="bg-slate-600 text-white px-6 py-2.5 rounded-full border border-gray-300 shadow-md shadow-black/20 hover:bg-slate-700 transition-all active:scale-95"
->
-  Plan your trip
-</Link>
-          </div>
+                      <Link 
+            href="/contact" 
+            className="bg-slate-600 text-white px-6 py-2.5 rounded-full border border-gray-300 shadow-md shadow-black/20 hover:bg-slate-700 transition-all active:scale-95"
+          >
+            Plan your trip
+          </Link>
+                    </div>
 
           {/* Simple Mobile Link */}
           <div className="md:hidden">
