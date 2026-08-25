@@ -41,11 +41,11 @@ export default function ChatWidget() {
     loadingRef.current = true;
 
     try {
-      const res = await fetch('https://travel-unbounded-backend.onrender.com/api/enquiry', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify(formData)
-});
+            const res = await fetch('https://travel-unbounded-backend.onrender.com/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input }),
+        });
       const data = await res.json();
 
       if (!res.ok) {

@@ -1,51 +1,53 @@
 import { NextResponse } from 'next/server';
+import { redis } from '@/lib/redis';
 import connectDB from '@/lib/mongodb';
 import Chat from '@/models/Chat';
 import OpenAI from 'openai';
 
-// We do NOT initialize the client outside the function to avoid Build Errors
+export const dynamic = 'force-dynamic';
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+// Handle Preflight request for CORS
+export async function OPTIONS() {
+  return NextResponse.json({}, { headers: corsHeaders });
+}
+
 export async function POST(req) {
   try {
-    // 1. Initialize inside the POST function
+    const { message } = await req.json();
+    
     const groq = new OpenAI({
       apiKey: process.env.GROQ_API_KEY,
-      // If you are using a specific service for "openai/gpt-oss-20b", 
-      // ensure this baseURL is correct. For Groq standard models, we use:
-      // baseURL: "https://api.groq.com/openai/v1", 
       baseURL: "https://api.groq.com/openai/v1",
     });
 
-    const { message } = await req.json();
-    
-    // 2. Call AI with your requested model ID
+    const cacheKey = `chat:${message?.toLowerCase().trim()}`;
+    const cachedAnswer = await redis.get(cacheKey);
+
+    if (cachedAnswer) {
+      return NextResponse.json({ text: cachedAnswer, fromCache: true }, { headers: corsHeaders });
+    }
+
     const completion = await groq.chat.completions.create({
-      model: "openai/gpt-oss-20b", 
-      messages: [
-        { role: "system", content: "You are a professional travel assistant for Travel Unbounded." },
-        { role: "user", content: message }
-      ],
+      model: "openai/gpt-oss-20b",
+      messages: [{ role: "user", content: message }],
     });
 
     const aiResponse = completion.choices[0].message.content;
 
-    // 3. Connect to Database
+    await redis.set(cacheKey, aiResponse, { ex: 86400 });
     await connectDB();
+    await Chat.create({ userQuestion: message, aiResponse: aiResponse });
 
-    // 4. Store Conversation in MongoDB
-    await Chat.create({ 
-      userQuestion: message, 
-      aiResponse: aiResponse 
-    });
-
-    return NextResponse.json({ text: aiResponse });
+    return NextResponse.json({ text: aiResponse }, { headers: corsHeaders });
 
   } catch (error) {
-    // Check terminal for this log if the chat window shows an error
-    console.error("DEBUG ERROR:", error.message);
-    
-    return NextResponse.json(
-      { error: "AI Processing Failed", details: error.message }, 
-      { status: 500 }
-    );
+    console.error("AI Error:", error.message);
+    return NextResponse.json({ error: error.message }, { status: 500, headers: corsHeaders });
   }
 }
