@@ -1,5 +1,27 @@
 @import "tailwindcss";
 
+/* Flight animation for the hero plane */
+@keyframes flightMove {
+  0% {
+    transform: translateX(-20vw);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(120vw);
+    opacity: 0;
+  }
+}
+
+.animate-flight-real {
+  animation: flightMove 20s linear infinite;
+}
+
 /* Fix for Phone Input Styling */
 .PhoneInput {
   display: flex;
