@@ -18,6 +18,14 @@ Caching Layer: Upstash Redis (Fast-refresh).
 Voice Engine: Web Speech API (Native browser STT/TTS).
 Icons & UI: Lucide React, Framer Motion (for animations).
 
+
+
+
+
+
+
+<img width="4154" height="3644" alt="travel-unbounded-vo73 onrender com_about (1)" src="https://github.com/user-attachments/assets/b66b8be0-76b0-4e17-afbc-a00ad08cf874" />
+
 ✨ Features
 
 Phase 1: Core Functionality
