@@ -21,10 +21,9 @@ Icons & UI: Lucide React, Framer Motion (for animations).
 
 
 
+<img width="4154" height="5960" alt="travel home" src="https://github.com/user-attachments/assets/3662b3be-8a16-41fd-9926-8da95474448d" />
 
 
-
-<img width="4154" height="3644" alt="travel-unbounded-vo73 onrender com_about (1)" src="https://github.com/user-attachments/assets/b66b8be0-76b0-4e17-afbc-a00ad08cf874" />
 
 ✨ Features
 
