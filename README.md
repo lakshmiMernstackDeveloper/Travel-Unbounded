@@ -6,7 +6,7 @@ This project is a premium, high-performance travel company website built with Ne
 
 Production Link: [Insert your Render/Vercel URL here]
 
-Backend API: [Insert your Render Backend URL here]
+Web API: [ https://travel-unbounded-vo73.onrender.com ]
 
 🛠️ Technical Stack
 
@@ -18,12 +18,7 @@ Caching Layer: Upstash Redis (Fast-refresh).
 Voice Engine: Web Speech API (Native browser STT/TTS).
 Icons & UI: Lucide React, Framer Motion (for animations).
 
-
-
-
 <img width="4154" height="5960" alt="travel home" src="https://github.com/user-attachments/assets/3662b3be-8a16-41fd-9926-8da95474448d" />
-
-
 
 ✨ Features
 
