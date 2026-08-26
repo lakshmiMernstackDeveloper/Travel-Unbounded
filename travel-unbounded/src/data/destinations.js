@@ -28,7 +28,7 @@ export const destinations = [
     id: 4,
     name: "Andaman",
     category: "india",
-    image: "https://images.unsplash.com/photo-1589135340847-57a69a44e46c",
+    image: "https://cdn.experienceandamans.com/images/ross-and-smith-island-diglipur-andaman-5fb2adc2e4e83.jpg",
     description: "Pristine white sand beaches and incredible scuba diving spots.",
     price: "35,000"
   },
