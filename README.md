@@ -36,24 +36,111 @@ Stores data in a TravelUnbounded collection in MongoDB.
 
 Phase 2: Advanced AI & UI
 
-AI Itinerary Planner: A floating chatbot that generates custom 3-day travel plans.
+1. How to implement it "The Right Way"
 
-Redis Caching: Repeat questions are served in milliseconds via Redis to save AI credits and reduce latency.
+In your src/app/api/chat/route.js, the most important part is the System Message. This tells the AI how to behave before the user even types a word.
 
-Voice Assistance:
+The Code (Backend):
 
-Voice-to-Text: Users can speak their travel questions.
+code
 
-Text-to-Speech: The AI reads the itinerary aloud (can be muted).
+JavaScript
 
-Offline Detection: Custom global monitor detects internet loss and shows a professional recovery screen.
+// src/app/api/chat/route.js
 
-Admin Dashboard: Secure logs at /admin to view leads and AI conversation history.
 
-Visual Polish: Realistic animated airplane with vapor trails and floating clouds on the contact page.
+const systemPrompt = `
+
+You are the Lead Travel Consultant for "Travel Unbounded", a premium experiential travel agency. 
+
+Your goal is to help users plan their dream journey. 
+
+RULES:
+
+1. If the user asks for a trip, provide a high-end 3-day itinerary.
+
+2. Structure the output clearly: 
+
+   - Start with a professional greeting.
+
+   - Use '### Day 1', '### Day 2', etc., for headers.
+
+   - Include 'Morning', 'Afternoon', and 'Evening' suggestions for each day.
+
+   - End with an 'Expert Tip' related to the destination.
+
+4. Use a calm, luxurious, and welcoming tone.
+
+5. If a user asks something unrelated to travel, politely redirect them to travel planning.
+`;
+
+const completion = await groq.chat.completions.create({
+
+  model: "llama-3.1-8b-instant",
+  
+  messages: [
+  
+    { role: "system", content: systemPrompt }, // IDENTITY
+    
+    { role: "user", content: message }         // USER QUESTION
+  ],
+});
+
+2. Which type of Output should it give?
+
+The AI should output Markdown. Markdown is great because your frontend can easily turn it into beautiful text with bold headings, bullet points, and clean spacing.
+
+Example of a "Good" AI Output:
+
+Travel Expert: "Hello! I would be delighted to help you plan your 3-day escape to Kerala. Here is a curated experiential itinerary:"
+
+Day 1: The Tranquil Backwaters
+
+Morning: Arrive at Alleppey and board your private luxury houseboat. Enjoy traditional Malabar breakfast.
+
+Afternoon: Cruise through the Vembanad Lake. Watch the local life along the banks.
+
+Evening: A quiet candle-lit dinner on the deck under the stars.
+
+Day 2: Lush Hill Stations
+
+Morning: Travel to Munnar. Visit the Eravikulam National Park.
+
+... (and so on)
+
+Expert Tip: Carry a light jacket even in summer, as the hills of Munnar can get chilly at night.
+
+3. How to display this in React
+
+Since the AI gives you Markdown text (with ### and *), you want the Chat Widget to show it properly.
+
+Pro Tip: Use the whitespace-pre-wrap Tailwind class. This ensures that the AI’s line breaks and spaces actually show up on the screen.
+
+In src/components/ChatWidget.js:
+
+code
+
+JavaScript
+
+<div className="bg-white border p-4 rounded-2xl rounded-bl-none text-sm leading-relaxed text-gray-700 whitespace-pre-wrap">
+
+  {m.content}
+
+</div>
+
+4. Summary: Why this is "Right"
+
+Feature	Wrong Way	Right Way (Your Project)
+
+Response	"You should go to Kenya. It is nice."	"Welcome! As a Travel Unbounded expert, here is your 3-day Kenya Safari..."
+
+Formatting	One big messy paragraph.	Structured days with headings and bullet points.
+
+Persistence	Forgotten after refresh.	Saved to MongoDB so the admin can read it later.
+
+Efficiency	Calls AI for every hello.	Uses Redis Cache to answer common questions instantly.
 
 ⚙️ Installation & Setup
-
 
 Follow these steps to run the project locally:
 
